@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dr. Pawat Chunhachatrachai — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #070a0f;
+  --bg2: #0d1117;
+  --bg3: #111820;
+  --panel: #0f1923;
+  --border: rgba(100,180,255,0.10);
+  --border-bright: rgba(100,180,255,0.28);
+  --cyan: #4fc3f7;
+  --cyan-dim: #2a7fa8;
+  --gold: #f0b429;
+  --gold-dim: #8a6010;
+  --text: #e2eaf4;
+  --text-soft: #8fa5be;
+  --text-muted: #4a6070;
+  --white: #ffffff;
+  --accent-glow: rgba(79,195,247,0.15);
+  --radius: 6px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Lora', serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── CUSTOM CURSOR ── */
+#cursor {
+  position: fixed; top: 0; left: 0; width: 10px; height: 10px;
+  background: var(--cyan); border-radius: 50%;
+  pointer-events: none; z-index: 9999;
+  transition: transform 0.1s, opacity 0.2s;
+  mix-blend-mode: screen;
+}
+#cursor-ring {
+  position: fixed; top: 0; left: 0; width: 32px; height: 32px;
+  border: 1px solid rgba(79,195,247,0.5); border-radius: 50%;
+  pointer-events: none; z-index: 9998;
+  transition: transform 0.18s ease, width 0.2s, height 0.2s;
+  transform: translate(-11px, -11px);
+}
+
+/* ── CANVAS ── */
+#bg-canvas {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  z-index: 0; opacity: 0.6;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 24px; left: 50%; transform: translateX(-50%);
+  z-index: 100;
+  background: rgba(7,10,15,0.75);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: 50px;
+  padding: 10px 28px;
+  display: flex; gap: 32px; align-items: center;
+}
+nav a {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--text-soft); text-decoration: none;
+  transition: color 0.2s;
+}
+nav a:hover { color: var(--cyan); }
+nav .nav-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--cyan); opacity: 0.8;
+  animation: pulse 2s infinite;
+}
+nav .nav-sep { width: 1px; height: 16px; background: var(--border-bright); }
+nav .nav-icon { color: var(--text-muted); display: flex; align-items: center; transition: color 0.2s; }
+nav .nav-icon:hover { color: var(--cyan); }
+
+@keyframes pulse {
+  0%,100% { opacity: 0.8; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(0.7); }
+}
+
+/* ── SECTIONS ── */
+section { position: relative; z-index: 1; }
+
+/* ── HERO ── */
+#hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  text-align: center;
+  padding: 0 24px;
+}
+
+.hero-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--cyan); margin-bottom: 20px;
+  opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
+}
+
+.hero-name {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(52px, 8vw, 108px);
+  font-weight: 800; line-height: 0.95;
+  letter-spacing: -2px;
+  color: var(--white);
+  opacity: 0; animation: fadeUp 0.8s 0.4s forwards;
+}
+
+.hero-name .hl {
+  background: linear-gradient(135deg, var(--cyan) 0%, #81d4fa 50%, var(--gold) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+
+.hero-zh {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 18px; color: var(--text-muted);
+  letter-spacing: 8px; margin-top: 8px;
+  opacity: 0; animation: fadeUp 0.8s 0.55s forwards;
+}
+
+.hero-tagline {
+  margin-top: 28px;
+  font-size: 17px; color: var(--text-soft);
+  max-width: 580px; line-height: 1.7; font-style: italic;
+  opacity: 0; animation: fadeUp 0.8s 0.7s forwards;
+}
+
+.hero-badges {
+  margin-top: 36px;
+  display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;
+  opacity: 0; animation: fadeUp 0.8s 0.9s forwards;
+}
+
+.badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px; letter-spacing: 1px;
+  padding: 6px 14px; border-radius: 3px;
+  border: 1px solid var(--border-bright);
+  color: var(--cyan); background: rgba(79,195,247,0.06);
+  transition: background 0.2s, border-color 0.2s;
+}
+.badge:hover { background: rgba(79,195,247,0.15); border-color: var(--cyan); }
+
+.hero-socials {
+  margin-top: 24px;
+  display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
+  opacity: 0; animation: fadeUp 0.8s 1.05s forwards;
+}
+.social-link {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; letter-spacing: 1px;
+  display: flex; align-items: center; gap: 7px;
+  padding: 8px 16px; border-radius: 40px;
+  border: 1px solid var(--border);
+  color: var(--text-soft); text-decoration: none;
+  background: rgba(255,255,255,0.03);
+  transition: all 0.2s;
+}
+.social-link:hover {
+  border-color: var(--cyan); color: var(--cyan);
+  background: rgba(79,195,247,0.08);
+}
+
+.pub-link {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  letter-spacing: 0.8px; color: var(--cyan);
+  text-decoration: none; margin-top: 8px;
+  padding: 3px 9px; border-radius: 3px;
+  border: 1px solid rgba(79,195,247,0.2);
+  background: rgba(79,195,247,0.05);
+  transition: background 0.2s, border-color 0.2s;
+}
+.pub-link:hover { background: rgba(79,195,247,0.15); border-color: var(--cyan); }
+.pub-link svg { flex-shrink: 0; }
+
+.patent-link {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  letter-spacing: 0.8px; color: var(--gold);
+  text-decoration: none; margin-top: 10px;
+  padding: 3px 9px; border-radius: 3px;
+  border: 1px solid rgba(240,180,41,0.25);
+  background: rgba(240,180,41,0.05);
+  transition: background 0.2s, border-color 0.2s;
+}
+.patent-link:hover { background: rgba(240,180,41,0.15); border-color: var(--gold); }
+
+.hero-scroll {
+  position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  color: var(--text-muted); letter-spacing: 2px;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  opacity: 0; animation: fadeUp 1s 1.2s forwards;
+}
+.scroll-line {
+  width: 1px; height: 48px;
+  background: linear-gradient(to bottom, var(--cyan), transparent);
+  animation: scrollLine 2s infinite;
+}
+@keyframes scrollLine {
+  0% { transform: scaleY(0); transform-origin: top; }
+  50% { transform: scaleY(1); transform-origin: top; }
+  51% { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── SECTION HEADERS ── */
+.sec-header {
+  text-align: center; margin-bottom: 64px;
+}
+.sec-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--cyan); margin-bottom: 12px;
+}
+.sec-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(32px, 5vw, 52px); font-weight: 800;
+  color: var(--white); line-height: 1;
+}
+.sec-line {
+  width: 40px; height: 2px;
+  background: linear-gradient(90deg, var(--cyan), var(--gold));
+  margin: 18px auto 0;
+}
+
+/* ── CONTAINER ── */
+.container { max-width: 1140px; margin: 0 auto; padding: 100px 24px; }
+
+/* ── ABOUT ── */
+#about .about-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start;
+}
+.about-text p {
+  color: var(--text-soft); line-height: 1.9; font-size: 15.5px; margin-bottom: 18px;
+}
+.about-text p strong { color: var(--cyan); font-style: normal; font-family: 'JetBrains Mono', monospace; font-size: 13px; }
+
+.stats-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+}
+.stat-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  transition: border-color 0.3s, transform 0.3s;
+}
+.stat-card:hover { border-color: var(--border-bright); transform: translateY(-3px); }
+.stat-number {
+  font-family: 'Syne', sans-serif; font-size: 38px; font-weight: 800;
+  color: var(--cyan); line-height: 1;
+}
+.stat-number span { font-size: 20px; color: var(--gold); }
+.stat-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; margin-top: 6px;
+}
+
+/* ── EXPERIENCE ── */
+#experience { background: var(--bg2); }
+
+.timeline {
+  position: relative; padding-left: 32px;
+}
+.timeline::before {
+  content: '';
+  position: absolute; left: 0; top: 8px; bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, var(--cyan), transparent);
+}
+
+.tl-item {
+  position: relative; margin-bottom: 48px;
+  opacity: 0; transform: translateX(-20px);
+  transition: opacity 0.6s, transform 0.6s;
+}
+.tl-item.visible { opacity: 1; transform: translateX(0); }
+
+.tl-dot {
+  position: absolute; left: -36px; top: 6px;
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--cyan); border: 2px solid var(--bg2);
+  box-shadow: 0 0 12px var(--cyan);
+}
+
+.tl-date {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  color: var(--cyan); letter-spacing: 1.5px; margin-bottom: 6px;
+}
+
+.tl-company {
+  font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700;
+  color: var(--white); margin-bottom: 2px;
+}
+.tl-role {
+  font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  color: var(--gold); margin-bottom: 12px; letter-spacing: 0.5px;
+}
+
+.tl-card {
+  background: var(--panel);
+  border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 24px; margin-top: 10px;
+}
+
+.tl-desc { color: var(--text-soft); font-size: 14px; line-height: 1.75; margin-bottom: 14px; }
+
+.tl-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tl-tag {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.8px;
+  padding: 3px 10px; border-radius: 3px;
+  background: rgba(79,195,247,0.07); color: var(--cyan);
+  border: 1px solid rgba(79,195,247,0.2);
+}
+
+/* ── PROJECTS ── */
+.projects-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 24px;
+}
+
+.project-card {
+  background: var(--panel);
+  border: 1px solid var(--border); border-radius: 8px;
+  overflow: hidden; cursor: pointer;
+  transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+  opacity: 0; transform: translateY(24px);
+}
+.project-card.visible { opacity: 1; transform: translateY(0); }
+.project-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--border-bright);
+  box-shadow: 0 20px 60px rgba(79,195,247,0.08);
+}
+
+.card-top {
+  padding: 28px; border-bottom: 1px solid var(--border);
+  position: relative; overflow: hidden;
+}
+.card-top::before {
+  content: ''; position: absolute; top: -40px; right: -40px;
+  width: 120px; height: 120px; border-radius: 50%;
+  background: var(--accent-glow);
+}
+
+.card-icon {
+  font-size: 28px; margin-bottom: 14px;
+}
+.card-title {
+  font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700;
+  color: var(--white); margin-bottom: 6px;
+}
+.card-sub {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  color: var(--gold); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px;
+}
+.card-desc { font-size: 13.5px; color: var(--text-soft); line-height: 1.7; }
+
+.card-bottom { padding: 18px 28px; display: flex; gap: 6px; flex-wrap: wrap; }
+.card-tag {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  padding: 3px 9px; border-radius: 3px;
+  background: rgba(240,180,41,0.07); color: var(--gold);
+  border: 1px solid rgba(240,180,41,0.2);
+}
+
+/* ── PUBLICATIONS ── */
+#publications { background: var(--bg2); }
+
+.pub-list { display: flex; flex-direction: column; gap: 16px; }
+
+.pub-item {
+  background: var(--panel);
+  border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 24px 28px;
+  display: grid; grid-template-columns: auto 1fr; gap: 20px; align-items: start;
+  transition: border-color 0.3s, transform 0.3s;
+  opacity: 0; transform: translateY(16px);
+}
+.pub-item.visible { opacity: 1; transform: translateY(0); }
+.pub-item:hover { border-color: var(--border-bright); transform: translateX(6px); }
+
+.pub-type {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  writing-mode: vertical-rl;
+  color: var(--text-muted);
+  border-right: 1px solid var(--border);
+  padding-right: 14px;
+}
+.pub-type.journal { color: var(--cyan); border-color: rgba(79,195,247,0.3); }
+.pub-type.conference { color: var(--gold); border-color: rgba(240,180,41,0.3); }
+
+.pub-title-text {
+  font-family: 'Lora', serif; font-style: italic;
+  font-size: 15px; color: var(--white); margin-bottom: 6px; line-height: 1.5;
+}
+.pub-venue {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--text-muted); letter-spacing: 0.5px;
+}
+
+/* ── SKILLS ── */
+.skills-container {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.skill-card {
+  background: var(--panel); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 24px;
+  transition: border-color 0.3s;
+  opacity: 0; transform: scale(0.96);
+  transition: opacity 0.5s, transform 0.5s, border-color 0.3s;
+}
+.skill-card.visible { opacity: 1; transform: scale(1); }
+.skill-card:hover { border-color: var(--border-bright); }
+
+.skill-cat {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--cyan); margin-bottom: 14px;
+  display: flex; align-items: center; gap: 8px;
+}
+.skill-cat::before {
+  content: '//'; color: var(--text-muted); font-weight: 300;
+}
+
+.skill-items { display: flex; flex-wrap: wrap; gap: 6px; }
+.skill-pill {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  padding: 5px 12px; border-radius: 3px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  color: var(--text);
+  transition: background 0.2s, color 0.2s;
+}
+.skill-pill:hover { background: rgba(79,195,247,0.12); color: var(--cyan); }
+
+/* ── EDUCATION ── */
+.edu-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.edu-card {
+  background: var(--panel); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 28px;
+  transition: border-color 0.3s, transform 0.3s;
+  opacity: 0; transform: translateY(20px);
+}
+.edu-card.visible { opacity: 1; transform: translateY(0); }
+.edu-card:hover { border-color: var(--border-bright); transform: translateY(-4px); }
+
+.edu-level {
+  font-family: 'JetBrains Mono', monospace; font-size: 9.5px;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 10px;
+}
+.edu-degree-title {
+  font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700;
+  color: var(--white); margin-bottom: 6px; line-height: 1.3;
+}
+.edu-school {
+  font-size: 13px; color: var(--cyan); margin-bottom: 4px;
+}
+.edu-period {
+  font-family: 'JetBrains Mono', monospace; font-size: 10.5px;
+  color: var(--text-muted); margin-bottom: 14px;
+}
+.edu-note { font-size: 13px; color: var(--text-soft); line-height: 1.7; }
+
+/* ── PATENTS ── */
+.patent-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+}
+.patent-card {
+  background: var(--panel); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 28px;
+  transition: border-color 0.3s;
+}
+.patent-card:hover { border-color: var(--border-bright); }
+.patent-flag {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 10px;
+}
+.patent-title {
+  font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700;
+  color: var(--white); margin-bottom: 8px; line-height: 1.4;
+}
+.patent-id {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* ── CONTACT ── */
+#contact {
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+}
+.contact-inner {
+  text-align: center; max-width: 600px; margin: 0 auto;
+}
+.contact-inner p {
+  font-size: 16px; color: var(--text-soft); line-height: 1.8; margin-bottom: 36px; font-style: italic;
+}
+
+.contact-links {
+  display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;
+}
+.contact-btn {
+  font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 1px;
+  padding: 13px 28px; border-radius: 4px; text-decoration: none;
+  transition: all 0.25s;
+}
+.contact-btn.primary {
+  background: var(--cyan); color: var(--bg);
+  border: 1px solid var(--cyan);
+}
+.contact-btn.primary:hover { background: transparent; color: var(--cyan); }
+.contact-btn.secondary {
+  background: transparent; color: var(--text);
+  border: 1px solid var(--border-bright);
+}
+.contact-btn.secondary:hover { border-color: var(--cyan); color: var(--cyan); }
+
+/* ── FOOTER ── */
+footer {
+  text-align: center; padding: 28px;
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  color: var(--text-muted); letter-spacing: 1.5px;
+  border-top: 1px solid var(--border);
+}
+
+/* ── MODAL ── */
+.modal-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(7,10,15,0.9); z-index: 500;
+  backdrop-filter: blur(12px);
+  align-items: center; justify-content: center;
+  padding: 24px;
+}
+.modal-overlay.open { display: flex; }
+
+.modal {
+  background: var(--panel);
+  border: 1px solid var(--border-bright);
+  border-radius: 10px; max-width: 680px; width: 100%;
+  max-height: 85vh; overflow-y: auto;
+  padding: 40px; position: relative;
+  animation: modalIn 0.3s ease;
+}
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.96) translateY(20px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.modal-close {
+  position: absolute; top: 16px; right: 16px;
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--text-muted); background: none; border: 1px solid var(--border);
+  border-radius: 3px; padding: 4px 10px; cursor: none;
+  transition: color 0.2s, border-color 0.2s;
+}
+.modal-close:hover { color: var(--cyan); border-color: var(--cyan); }
+
+.modal-icon { font-size: 36px; margin-bottom: 16px; }
+.modal-tag {
+  font-family: 'JetBrains Mono', monospace; font-size: 9.5px;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 8px;
+}
+.modal-title {
+  font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 800;
+  color: var(--white); margin-bottom: 16px; line-height: 1.2;
+}
+.modal-body { font-size: 14.5px; color: var(--text-soft); line-height: 1.85; }
+.modal-body ul { padding-left: 18px; margin-top: 12px; }
+.modal-body li { margin-bottom: 8px; }
+.modal-tech { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 7px; }
+.modal-tech span {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  padding: 4px 11px; border-radius: 3px;
+  background: rgba(79,195,247,0.08); color: var(--cyan);
+  border: 1px solid rgba(79,195,247,0.2);
+}
+
+/* ── REVEAL ── */
+.reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s, transform 0.7s; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  #about .about-grid { grid-template-columns: 1fr; }
+  .patent-grid { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  nav { gap: 18px; padding: 10px 20px; }
+  .modal { padding: 28px; }
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<canvas id="bg-canvas"></canvas>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-dot"></div>
+  <a href="#about">About</a>
+  <a href="#experience">Experience</a>
+  <a href="#projects">Projects</a>
+  <a href="#publications">Publications</a>
+  <a href="#skills">Skills</a>
+  <a href="#contact">Contact</a>
+  <div class="nav-sep"></div>
+  <a href="https://github.com/PudPawat" target="_blank" title="GitHub" class="nav-icon">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+  </a>
+  <a href="https://medium.com/@pushtech" target="_blank" title="Medium" class="nav-icon">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"/></svg>
+  </a>
+  <a href="https://www.credly.com/users/pawat-chunhachatrachai" target="_blank" title="Credly" class="nav-icon">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.383 0 0 5.383 0 12s5.383 12 12 12 12-5.383 12-12S18.617 0 12 0zm0 4.5a7.5 7.5 0 110 15 7.5 7.5 0 010-15zm0 2a5.5 5.5 0 100 11 5.5 5.5 0 000-11zm0 2l1.39 2.82 3.11.45-2.25 2.19.53 3.09L12 15.27l-2.78 1.46.53-3.09L7.5 11.45l3.11-.45L12 8.5z"/></svg>
+  </a>
+  <a href="https://orcid.org/0009-0009-7436-6404" target="_blank" title="ORCID" class="nav-icon">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12 12-5.372 12-12S18.628 0 12 0zM7.369 4.378c.525 0 .947.431.947.947s-.422.947-.947.947a.95.95 0 01-.947-.947c0-.525.422-.947.947-.947zm-.722 3.038h1.444v10.041H6.647V7.416zm3.562 0h3.9c3.712 0 5.344 2.653 5.344 5.025 0 2.578-2.016 5.016-5.325 5.016h-3.919V7.416zm1.444 1.303v7.444h2.297c3.272 0 3.872-2.203 3.872-3.722 0-2.016-1.028-3.722-3.872-3.722h-2.297z"/></svg>
+  </a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-eyebrow">AI Researcher · Systems Engineer · Technical Consultant</div>
+  <div class="hero-name">Dr. <span class="hl">Pawat</span><br>Chunhachatrachai</div>
+  <div class="hero-zh">孫瓦德</div>
+  <div class="hero-tagline">
+    Designing production-grade AI agents, LLM-powered systems, and cloud-native data architectures 
+    across Southeast Asia and Taiwan.
+  </div>
+  <div class="hero-badges">
+    <div class="badge">PhD · AI & Computer Vision</div>
+    <div class="badge">Google ADK · RAG · MCP</div>
+    <div class="badge">GCP · AWS · Databricks</div>
+    <div class="badge">5+ Patents & Publications</div>
+    <div class="badge">3 Journals · 3 Conferences</div>
+  </div>
+  <div class="hero-socials">
+    <a href="https://github.com/PudPawat" target="_blank" class="social-link">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+      GitHub
+    </a>
+    <a href="https://medium.com/@pushtech" target="_blank" class="social-link">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"/></svg>
+      Medium
+    </a>
+    <a href="https://www.credly.com/users/pawat-chunhachatrachai" target="_blank" class="social-link">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.383 0 0 5.383 0 12s5.383 12 12 12 12-5.383 12-12S18.617 0 12 0zm0 4.5a7.5 7.5 0 110 15 7.5 7.5 0 010-15zm0 2a5.5 5.5 0 100 11 5.5 5.5 0 000-11zm0 2l1.39 2.82 3.11.45-2.25 2.19.53 3.09L12 15.27l-2.78 1.46.53-3.09L7.5 11.45l3.11-.45L12 8.5z"/></svg>
+      Credly
+    </a>
+    <a href="https://orcid.org/0009-0009-7436-6404" target="_blank" class="social-link">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12 12-5.372 12-12S18.628 0 12 0zM7.369 4.378c.525 0 .947.431.947.947s-.422.947-.947.947a.95.95 0 01-.947-.947c0-.525.422-.947.947-.947zm-.722 3.038h1.444v10.041H6.647V7.416zm3.562 0h3.9c3.712 0 5.344 2.653 5.344 5.025 0 2.578-2.016 5.016-5.325 5.016h-3.919V7.416zm1.444 1.303v7.444h2.297c3.272 0 3.872-2.203 3.872-3.722 0-2.016-1.028-3.722-3.872-3.722h-2.297z"/></svg>
+      ORCID
+    </a>
+    <a href="https://www.linkedin.com/in/pawat-chun/" target="_blank" class="social-link">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      LinkedIn
+    </a>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    scroll
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="sec-header reveal">
+      <div class="sec-tag">// 01 · About</div>
+      <div class="sec-title">Who I Am</div>
+      <div class="sec-line"></div>
+    </div>
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p>I'm a <strong>PhD-trained AI engineer</strong> currently working as a Technical Consultant Engineer II at <strong>Appier</strong> — Taiwan's largest digital marketing SaaS — where I architect enterprise-grade AI systems deployed across Southeast Asia.</p>
+        <p>My work sits at the intersection of <strong>agentic AI systems</strong>, cloud-native data engineering, and enterprise software deployment. I design LLM-powered agents with RAG pipelines, Chain-of-Thought reasoning, and MCP-wrapped APIs — systems that actually work in production.</p>
+        <p>Before Appier, I spent five years in academia and industry roles spanning computer vision, robotics, E-bike AI systems, and AOI quality control. I hold patents in both Europe and Taiwan, have published in IEEE and MDPI journals, and was invited as an adjunct lecturer at my undergraduate alma mater.</p>
+        <p>I believe the best AI work bridges deep research with practical engineering — and I've spent my career doing exactly that.</p>
+      </div>
+      <div class="stats-grid reveal">
+        <div class="stat-card">
+          <div class="stat-number">5<span>+</span></div>
+          <div class="stat-label">Years in AI/ML</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">3</div>
+          <div class="stat-label">Journal Papers</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">2</div>
+          <div class="stat-label">Patents Issued</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">4.15</div>
+          <div class="stat-label">PhD GPA / 4.30</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">90<span>%</span></div>
+          <div class="stat-label">SEA Client Coverage</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">10<span>+</span></div>
+          <div class="stat-label">GCP Certifications</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="container">
+    <div class="sec-header reveal">
+      <div class="sec-tag">// 02 · Experience</div>
+      <div class="sec-title">Work History</div>
+      <div class="sec-line"></div>
+    </div>
+    <div class="timeline">
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-date">DEC 2022 – PRESENT</div>
+        <div class="tl-company">Appier</div>
+        <div class="tl-role">Technical Consultant Engineer II (Nov 2024–) · Technical Consultant Engineer (Dec 2022–Sep 2024)</div>
+        <div class="tl-card">
+          <div class="tl-desc">Architecting AI-driven marketing deployments (AIQUA, AIRIS, BOTBONNIE) for enterprise clients across SEA (90%) and Taiwan (10%). Primary technical lead for Guardian, Amorepacific, Emart24, Vitadiary, and Pruksa Real Estate. Leading end-to-end system design: LLM-powered agents, ETL pipelines, secure cloud infrastructure, and real-time API orchestration.</div>
+          <div class="tl-tags">
+            <span class="tl-tag">Python</span><span class="tl-tag">Google ADK</span><span class="tl-tag">RAG</span>
+            <span class="tl-tag">BigQuery</span><span class="tl-tag">Airflow</span><span class="tl-tag">GCP</span>
+            <span class="tl-tag">AWS</span><span class="tl-tag">MongoDB</span><span class="tl-tag">Elasticsearch</span>
+            <span class="tl-tag">Databricks</span><span class="tl-tag">JavaScript</span><span class="tl-tag">SQL</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-date">AUG 2025 – JAN 2026</div>
+        <div class="tl-company">KMUTT</div>
+        <div class="tl-role">Adjunct Lecturer (Invited)</div>
+        <div class="tl-card">
+          <div class="tl-desc">Invited to teach Machine Learning, Optimization and Data Science, and Data Analytics for Asset Management at graduate and senior-undergraduate levels. Developed course materials and hands-on projects using real-world datasets to bridge theory with industry practice.</div>
+          <div class="tl-tags">
+            <span class="tl-tag">Machine Learning</span><span class="tl-tag">Data Science</span>
+            <span class="tl-tag">Optimization</span><span class="tl-tag">Predictive Modeling</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-date">JUL 2020 – NOV 2022</div>
+        <div class="tl-company">SINBON Electronics</div>
+        <div class="tl-role">Software Engineer · AI Engineer Intern</div>
+        <div class="tl-card">
+          <div class="tl-desc">Developed a patented AI force-control algorithm for E-bike systems using PyTorch. Led AOI (Automatic Optical Inspection) project using OpenCV and PyTorch for image classification, object detection, and OCR. Built real-time data visualization with MQTT and began developing an iOS app in Swift for live E-bike testing.</div>
+          <div class="tl-tags">
+            <span class="tl-tag">PyTorch</span><span class="tl-tag">OpenCV</span><span class="tl-tag">MQTT</span>
+            <span class="tl-tag">Swift</span><span class="tl-tag">OCR</span><span class="tl-tag">Computer Vision</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-date">SEP 2021 – AUG 2022</div>
+        <div class="tl-company">Honglang Technology</div>
+        <div class="tl-role">Professional Service Programmer (Part-time)</div>
+        <div class="tl-card">
+          <div class="tl-desc">Built custom software solutions and Computer Vision applications for defect detection across multiple industries. Analyzed client business needs, developed custom applications, and provided post-launch support.</div>
+          <div class="tl-tags">
+            <span class="tl-tag">Computer Vision</span><span class="tl-tag">Defect Detection</span><span class="tl-tag">Python</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="container">
+    <div class="sec-header reveal">
+      <div class="sec-tag">// 03 · Projects</div>
+      <div class="sec-title">Key Projects</div>
+      <div class="sec-line"></div>
+    </div>
+    <div class="projects-grid">
+
+      <div class="project-card" data-modal="agent">
+        <div class="card-top">
+          <div class="card-icon">🤖</div>
+          <div class="card-sub">AI Agent · Appier</div>
+          <div class="card-title">AI Technical Support Agent</div>
+          <div class="card-desc">Production-grade LLM agent using Google ADK with RAG, CoT reasoning, and MCP-wrapped APIs to automate consultant workflows across enterprise clients.</div>
+        </div>
+        <div class="card-bottom">
+          <span class="card-tag">Google ADK</span><span class="card-tag">RAG</span>
+          <span class="card-tag">MCP</span><span class="card-tag">Python</span>
+        </div>
+      </div>
+
+      <div class="project-card" data-modal="etl">
+        <div class="card-top">
+          <div class="card-icon">⚙️</div>
+          <div class="card-sub">Data Engineering · Appier</div>
+          <div class="card-title">AIRIS CDP ETL Pipeline</div>
+          <div class="card-desc">Scalable ETL pipelines synchronizing customer data across platforms using Airflow, BigQuery, and Docker. Supports real-time marketing automation for enterprise clients across SEA.</div>
+        </div>
+        <div class="card-bottom">
+          <span class="card-tag">Airflow</span><span class="card-tag">BigQuery</span>
+          <span class="card-tag">Docker</span><span class="card-tag">Python</span>
+        </div>
+      </div>
+
+      <div class="project-card" data-modal="lens">
+        <div class="card-top">
+          <div class="card-icon">👁️</div>
+          <div class="card-sub">Computer Vision · NTUST PhD</div>
+          <div class="card-title">CLensRimVision</div>
+          <div class="card-desc">Novel computer vision algorithm for detecting rim defects in contact lenses. Published in MDPI Sensors. Combines image processing techniques for high-precision industrial quality control.</div>
+        </div>
+        <div class="card-bottom">
+          <span class="card-tag">OpenCV</span><span class="card-tag">PyTorch</span>
+          <span class="card-tag">Python</span><span class="card-tag">MDPI Published</span>
+        </div>
+      </div>
+
+      <div class="project-card" data-modal="ebike">
+        <div class="card-top">
+          <div class="card-icon">🚲</div>
+          <div class="card-sub">AI Systems · SINBON Electronics</div>
+          <div class="card-title">E-Bike Assist AI (Patented)</div>
+          <div class="card-desc">AI-powered force-control algorithm for electric-assist bicycles, resulting in issued patents in both Europe and Taiwan. Built with PyTorch, MQTT for real-time telemetry, and a companion iOS app.</div>
+        </div>
+        <div class="card-bottom">
+          <span class="card-tag">PyTorch</span><span class="card-tag">MQTT</span>
+          <span class="card-tag">Swift</span><span class="card-tag">Patented</span>
+        </div>
+      </div>
+
+      <div class="project-card" data-modal="aoi">
+        <div class="card-top">
+          <div class="card-icon">🔬</div>
+          <div class="card-sub">Computer Vision · SINBON Electronics</div>
+          <div class="card-title">AOI Inspection System</div>
+          <div class="card-desc">Led Automatic Optical Inspection project combining image classification, object detection, and OCR. Leveraged multi-processing for throughput optimization in industrial manufacturing quality control.</div>
+        </div>
+        <div class="card-bottom">
+          <span class="card-tag">OpenCV</span><span class="card-tag">PyTorch</span>
+          <span class="card-tag">OCR</span><span class="card-tag">Multiprocessing</span>
+        </div>
+      </div>
+
+      <div class="project-card" data-modal="angle">
+        <div class="card-top">
+          <div class="card-icon">📐</div>
+          <div class="card-sub">Computer Vision · NTUST PhD</div>
+          <div class="card-title">Angle Detection System</div>
+          <div class="card-desc">Automated angle detection for industrial production lines using combined image processing techniques. Published in Intelligent Automation & Soft Computing journal, Aug 2024.</div>
+        </div>
+        <div class="card-bottom">
+          <span class="card-tag">Image Processing</span><span class="card-tag">Python</span>
+          <span class="card-tag">Journal Published</span>
+        </div>
+      </div>
+
+      <div class="project-card" data-modal="sms">
+        <div class="card-top">
+          <div class="card-icon">📱</div>
+          <div class="card-sub">Backend Engineering · Appier</div>
+          <div class="card-title">SMS Unsubscribe Webhook API</div>
+          <div class="card-desc">Custom webhook APIs for SMS unsubscribe workflows for all Singapore clients. Built to comply with PDPA regulations, integrating with multiple SMS providers across the region.</div>
+        </div>
+        <div class="card-bottom">
+          <span class="card-tag">Python</span><span class="card-tag">REST API</span>
+          <span class="card-tag">PDPA</span><span class="card-tag">Singapore</span>
+        </div>
+      </div>
+
+      <div class="project-card" data-modal="cnn">
+        <div class="card-top">
+          <div class="card-icon">🧠</div>
+          <div class="card-sub">Machine Learning · ICSMech 2024</div>
+          <div class="card-title">CNN Backbone Comparison Study</div>
+          <div class="card-desc">Comparative analysis of pre-trained CNN backbones and ML techniques for high-similarity circular object image classification — a challenging edge case in industrial vision systems.</div>
+        </div>
+        <div class="card-bottom">
+          <span class="card-tag">CNNs</span><span class="card-tag">TensorFlow</span>
+          <span class="card-tag">PyTorch</span><span class="card-tag">Conference 2024</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PUBLICATIONS -->
+<section id="publications">
+  <div class="container">
+    <div class="sec-header reveal">
+      <div class="sec-tag">// 04 · Research</div>
+      <div class="sec-title">Publications</div>
+      <div class="sec-line"></div>
+    </div>
+    <div class="pub-list">
+
+      <div class="pub-item">
+        <div class="pub-type journal">Journal</div>
+        <div>
+          <div class="pub-title-text">Active Flow Control of the Unsteady Wake behind a Square-Back Road</div>
+          <div class="pub-venue">Journal of Advanced Research Fluid Mechanics and Thermal Sciences · Apr 2025</div>
+          <a href="https://semarakilmu.com.my/journals/index.php/fluid_mechanics_thermal_sciences/article/view/14321" target="_blank" class="pub-link">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+            View Paper
+          </a>
+        </div>
+      </div>
+
+      <div class="pub-item">
+        <div class="pub-type journal">Journal</div>
+        <div>
+          <div class="pub-title-text">Automated Angle Detection for Industrial Production Lines Using Combined Image Processing Techniques</div>
+          <div class="pub-venue">Intelligent Automation & Soft Computing · Aug 2024</div>
+          <a href="https://www.techscience.com/iasc/online/detail/21291" target="_blank" class="pub-link">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+            View Paper
+          </a>
+        </div>
+      </div>
+
+      <div class="pub-item">
+        <div class="pub-type journal">Journal</div>
+        <div>
+          <div class="pub-title-text">CLensRimVision: A Novel Computer Vision Algorithm for Detecting Rim Defects in Contact Lenses</div>
+          <div class="pub-venue">MDPI Sensors · Dec 2023</div>
+          <a href="https://www.mdpi.com/1424-8220/23/23/9610" target="_blank" class="pub-link">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+            View Paper
+          </a>
+        </div>
+      </div>
+
+      <div class="pub-item">
+        <div class="pub-type conference">Conf.</div>
+        <div>
+          <div class="pub-title-text">Comparative Analysis of Pre-Trained CNN Backbones and ML Techniques for High Similarity in Circular Object Image Classification</div>
+          <div class="pub-venue">ICSMech 2024</div>
+          <a href="https://ieeexplore.ieee.org/abstract/document/10812330" target="_blank" class="pub-link">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+            IEEE Xplore
+          </a>
+        </div>
+      </div>
+
+      <div class="pub-item">
+        <div class="pub-type conference">Conf.</div>
+        <div>
+          <div class="pub-title-text">Pioneering Simplicity in Computer Vision: A Low-Code OpenCV Interface for Defect Detection Applications</div>
+          <div class="pub-venue">IEEE ECTI-CON 2024 · Jul 2024</div>
+          <a href="https://ieeexplore.ieee.org/document/10594854" target="_blank" class="pub-link">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+            IEEE Xplore
+          </a>
+        </div>
+      </div>
+
+      <div class="pub-item">
+        <div class="pub-type conference">Conf.</div>
+        <div>
+          <div class="pub-title-text">Effect of Heat Transfer Coefficient and Cooling Schedule on Porosity in Low-Pressure Die Casting Aluminium Alloy Wheels</div>
+          <div class="pub-venue">TSME ICOME 2019 · Dec 2019</div>
+          <a href="https://www.researchgate.net/publication/352761045_The_effect_of_heat_transfer_coefficient_and_cooling_schedule_on_porosity_sizes_of_low-pressure_die_casting_aluminium_alloy_wheels" target="_blank" class="pub-link">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+            ResearchGate
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="container">
+    <div class="sec-header reveal">
+      <div class="sec-tag">// 05 · Skills</div>
+      <div class="sec-title">Technical Stack</div>
+      <div class="sec-line"></div>
+    </div>
+    <div class="skills-container">
+      <div class="skill-card">
+        <div class="skill-cat">AI & LLM Systems</div>
+        <div class="skill-items">
+          <span class="skill-pill">Google ADK</span><span class="skill-pill">RAG</span>
+          <span class="skill-pill">LLM Agents</span><span class="skill-pill">CoT Reasoning</span>
+          <span class="skill-pill">MCP APIs</span><span class="skill-pill">Function Calling</span>
+          <span class="skill-pill">Vertex AI</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-cat">Computer Vision</div>
+        <div class="skill-items">
+          <span class="skill-pill">PyTorch</span><span class="skill-pill">TensorFlow</span>
+          <span class="skill-pill">OpenCV</span><span class="skill-pill">CNNs</span>
+          <span class="skill-pill">Object Detection</span><span class="skill-pill">OCR</span>
+          <span class="skill-pill">Image Classification</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-cat">Cloud & Data</div>
+        <div class="skill-items">
+          <span class="skill-pill">GCP</span><span class="skill-pill">BigQuery</span>
+          <span class="skill-pill">Cloud Run</span><span class="skill-pill">AWS S3</span>
+          <span class="skill-pill">Athena</span><span class="skill-pill">DynamoDB</span>
+          <span class="skill-pill">Databricks</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-cat">Data Engineering</div>
+        <div class="skill-items">
+          <span class="skill-pill">Apache Airflow</span><span class="skill-pill">ETL Pipelines</span>
+          <span class="skill-pill">Docker</span><span class="skill-pill">SQL</span>
+          <span class="skill-pill">Trino</span><span class="skill-pill">MongoDB</span>
+          <span class="skill-pill">Elasticsearch</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-cat">Programming</div>
+        <div class="skill-items">
+          <span class="skill-pill">Python</span><span class="skill-pill">JavaScript</span>
+          <span class="skill-pill">HTML/CSS</span><span class="skill-pill">Swift</span>
+          <span class="skill-pill">MATLAB</span><span class="skill-pill">SQL</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-cat">Platforms & Tools</div>
+        <div class="skill-items">
+          <span class="skill-pill">AIQUA</span><span class="skill-pill">AIRIS CDP</span>
+          <span class="skill-pill">BOTBONNIE</span><span class="skill-pill">GIOSG</span>
+          <span class="skill-pill">Kibana</span><span class="skill-pill">MQTT</span>
+          <span class="skill-pill">IAM/VPC</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Education -->
+    <div class="sec-header reveal" style="margin-top: 80px;">
+      <div class="sec-tag">// 06 · Education</div>
+      <div class="sec-title">Academic Background</div>
+      <div class="sec-line"></div>
+    </div>
+    <div class="edu-grid">
+      <div class="edu-card">
+        <div class="edu-level">Doctorate · 2021–2024</div>
+        <div class="edu-degree-title">PhD in AI & Robotics for Computer Vision</div>
+        <div class="edu-school">National Taiwan University of Science and Technology</div>
+        <div class="edu-period">GPA 4.15 / 4.30 · Advanced Intelligent Robot Lab</div>
+        <div class="edu-note">Computer vision, deep learning, industrial automation. Published 2 journals, 2 conference papers. VP of Thai Student Association.</div>
+      </div>
+      <div class="edu-card">
+        <div class="edu-level">Master's · 2019–2021</div>
+        <div class="edu-degree-title">MSc Mechanical Engineering (AI & ML focus)</div>
+        <div class="edu-school">National Taiwan University of Science and Technology</div>
+        <div class="edu-period">GPA 4.02 / 4.30</div>
+        <div class="edu-note">Specialized in data analysis, ML, and computer vision. Research on item detection and surface defect detection using deep learning.</div>
+      </div>
+      <div class="edu-card">
+        <div class="edu-level">Bachelor's · 2015–2019</div>
+        <div class="edu-degree-title">BEng Mechanical Engineering (2nd Class Honours)</div>
+        <div class="edu-school">King Mongkut's University of Technology Thonburi</div>
+        <div class="edu-period">GPA 3.38 / 4.00</div>
+        <div class="edu-note">Exchange program at Shibaura Institute of Technology, Japan (Monozukuri). Internship at Moldex Company, Taiwan. Conference paper authored.</div>
+      </div>
+    </div>
+
+    <!-- Patents -->
+    <div class="sec-header reveal" style="margin-top: 80px;">
+      <div class="sec-tag">// 07 · IP</div>
+      <div class="sec-title">Patents</div>
+      <div class="sec-line"></div>
+    </div>
+    <div class="patent-grid reveal">
+      <div class="patent-card">
+        <div class="patent-flag">🇪🇺 European Patent</div>
+        <div class="patent-title">Assisting Force Control System of Electrically Assisted Bicycle</div>
+        <div class="patent-id">TWM627643U · Issued Jun 1, 2022</div>
+        <a href="https://worldwide.espacenet.com/patent/search?q=pn%3DTWM627643U" target="_blank" class="patent-link">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+          Espacenet
+        </a>
+      </div>
+      <div class="patent-card">
+        <div class="patent-flag">🇹🇼 Taiwan Patent</div>
+        <div class="patent-title">Auxiliary Force Control System and Method for Power-Assisted Bicycle</div>
+        <div class="patent-id">M627643 · Issued Jun 1, 2022</div>
+        <a href="https://tiponet.tipo.gov.tw/tipoRgtQry/QR03.aspx?QRCode=Y&DataNo=M627643&DataCls=M" target="_blank" class="patent-link">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+          TIPO Portal
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-inner">
+      <div class="sec-header reveal">
+        <div class="sec-tag">// 08 · Contact</div>
+        <div class="sec-title">Get In Touch</div>
+        <div class="sec-line"></div>
+      </div>
+      <p class="reveal">
+        Whether it's an AI agent system, a data pipeline challenge, an enterprise consulting conversation, 
+        or a research collaboration — I'd love to connect.
+      </p>
+      <div class="contact-links reveal">
+        <a href="mailto:Pawat.chun@gmail.com" class="contact-btn primary">Pawat.chun@gmail.com</a>
+        <a href="https://www.linkedin.com/in/pawat-chun/" target="_blank" class="contact-btn secondary">LinkedIn</a>
+        <a href="https://github.com/PudPawat" target="_blank" class="contact-btn secondary">GitHub</a>
+        <a href="https://medium.com/@pushtech" target="_blank" class="contact-btn secondary">Medium</a>
+        <a href="https://www.credly.com/users/pawat-chunhachatrachai" target="_blank" class="contact-btn secondary">Credly</a>
+        <a href="https://orcid.org/0009-0009-7436-6404" target="_blank" class="contact-btn secondary">ORCID</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © 2025 Dr. Pawat Chunhachatrachai · Built with precision in Taiwan
+</footer>
+
+<!-- PROJECT MODALS -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal" id="modal">
+    <button class="modal-close" id="modal-close">✕ close</button>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<script>
+/* ── CURSOR ── */
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.transform = `translate(${mx - 5}px, ${my - 5}px)`;
+});
+function animRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.transform = `translate(${rx - 16}px, ${ry - 16}px)`;
+  requestAnimationFrame(animRing);
+}
+animRing();
+document.querySelectorAll('a, button, .project-card, .stat-card, .skill-pill').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cursor.style.transform += ' scale(2)';
+    ring.style.width = '48px'; ring.style.height = '48px';
+  });
+  el.addEventListener('mouseleave', () => {
+    ring.style.width = '32px'; ring.style.height = '32px';
+  });
+});
+
+/* ── PARTICLE CANVAS ── */
+const canvas = document.getElementById('bg-canvas');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [];
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+for (let i = 0; i < 90; i++) {
+  particles.push({
+    x: Math.random() * 1920, y: Math.random() * 1080,
+    vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3,
+    r: Math.random() * 1.5 + 0.3,
+    alpha: Math.random() * 0.5 + 0.1
+  });
+}
+
+function drawParticles() {
+  ctx.clearRect(0, 0, W, H);
+  particles.forEach(p => {
+    p.x += p.vx; p.y += p.vy;
+    if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+    if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(79,195,247,${p.alpha})`;
+    ctx.fill();
+  });
+  // connections
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const d = Math.sqrt(dx * dx + dy * dy);
+      if (d < 120) {
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.strokeStyle = `rgba(79,195,247,${0.06 * (1 - d / 120)})`;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+    }
+  }
+  requestAnimationFrame(drawParticles);
+}
+drawParticles();
+
+/* ── SCROLL REVEAL ── */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll(
+  '.reveal, .tl-item, .project-card, .pub-item, .skill-card, .edu-card'
+).forEach(el => observer.observe(el));
+
+/* ── PROJECT MODALS ── */
+const modals = {
+  agent: {
+    icon: '🤖', tag: 'AI Agent · Appier · 2024–Present',
+    title: 'AI Technical Support Agent',
+    body: `<p>One of my most complex projects at Appier: architecting a production-grade AI Technical Support Agent to automate consultant workflows and reduce resolution time for enterprise clients.</p>
+    <ul>
+      <li><strong>Architecture:</strong> Built with Python and Google ADK, implementing a planning-based agent framework with hierarchical task decomposition and iterative feedback loops.</li>
+      <li><strong>RAG Pipeline:</strong> Integrated BigQuery, internal knowledge bases, and operational APIs to ground LLM responses in structured enterprise data — significantly reducing hallucination.</li>
+      <li><strong>Tool Augmentation:</strong> Designed structured function-calling with dynamic tool selection across internal systems and third-party services.</li>
+      <li><strong>Chain-of-Thought:</strong> Implemented CoT reasoning workflows enabling the agent to decompose complex queries into intermediate steps before generating validated outputs.</li>
+      <li><strong>MCP Integration:</strong> Engineered MCP-wrapped APIs providing secure real-time access to databases within agent reasoning loops.</li>
+      <li><strong>Observability:</strong> Built Kibana/Elasticsearch pipelines for LLM response tracing, tool-call monitoring, and failure diagnostics.</li>
+      <li><strong>Security:</strong> Deployed with IAM role separation, VPC configuration, and static IP whitelisting.</li>
+    </ul>`,
+    tech: ['Python', 'Google ADK', 'RAG', 'LangChain', 'BigQuery', 'MCP', 'CoT', 'Elasticsearch', 'Kibana', 'IAM', 'GCP']
+  },
+  etl: {
+    icon: '⚙️', tag: 'Data Engineering · Appier · AIRIS CDP',
+    title: 'AIRIS CDP ETL Pipeline',
+    body: `<p>Designed and maintained scalable ETL pipelines for Appier's AIRIS Customer Data Platform, enabling real-time data synchronization across marketing channels for enterprise clients across Southeast Asia.</p>
+    <ul>
+      <li><strong>Architecture:</strong> Python-based pipelines orchestrated on Apache Airflow, containerized with Docker.</li>
+      <li><strong>Scale:</strong> Processing customer behavior events, purchase data, and campaign metrics for clients across SEA.</li>
+      <li><strong>Optimization:</strong> BigQuery-optimized queries for marketing analytics — monthly revenue, website visitors, product trends.</li>
+      <li><strong>Multi-source integration:</strong> Ingesting from AWS S3, Athena, MongoDB, and client-side SDKs.</li>
+      <li><strong>Data cleaning:</strong> Built dynamic AI-powered data cleaning models to handle unstructured and inconsistent inputs.</li>
+      <li><strong>Monitoring:</strong> Integrated alerting and observability through Kibana for pipeline health tracking.</li>
+    </ul>`,
+    tech: ['Apache Airflow', 'BigQuery', 'GCP', 'Docker', 'Python', 'SQL', 'AWS S3', 'Athena', 'MongoDB', 'Databricks']
+  },
+  lens: {
+    icon: '👁️', tag: 'Computer Vision · PhD Research · MDPI 2023',
+    title: 'CLensRimVision',
+    body: `<p>A novel computer vision algorithm developed during my PhD for automatically detecting rim defects in contact lenses — a high-stakes quality control application where human-level precision is required.</p>
+    <ul>
+      <li><strong>Problem:</strong> Contact lens rim defects are visually subtle and highly similar to non-defective lenses, making classification extremely challenging.</li>
+      <li><strong>Algorithm:</strong> Combined image processing pipeline with custom defect detection logic tailored to circular, transparent objects.</li>
+      <li><strong>Model:</strong> Deep learning backbone fine-tuned on domain-specific industrial data.</li>
+      <li><strong>Performance:</strong> Achieved high precision/recall meeting industrial QC standards.</li>
+      <li><strong>Publication:</strong> Published in MDPI Sensors, December 2023 — a peer-reviewed international journal.</li>
+      <li><strong>Impact:</strong> Directly applicable to automated optical inspection lines in lens manufacturing.</li>
+    </ul>`,
+    tech: ['OpenCV', 'PyTorch', 'Python', 'Deep Learning', 'Image Processing', 'Industrial Vision', 'MDPI Sensors']
+  },
+  ebike: {
+    icon: '🚲', tag: 'AI Systems · SINBON Electronics · Patented',
+    title: 'E-Bike Assist AI System',
+    body: `<p>Developed an AI-powered force-control algorithm for electric-assist bicycles during my time at SINBON Electronics. This project resulted in two patents — one European and one Taiwanese.</p>
+    <ul>
+      <li><strong>System Design:</strong> AI model to dynamically adjust motor assistance based on rider behavior, speed, terrain, and power input.</li>
+      <li><strong>ML Model:</strong> Built and trained with PyTorch (Python), using sensor telemetry as input features.</li>
+      <li><strong>Real-time Telemetry:</strong> Leveraged MQTT protocol for live data streaming, visualization, and analysis during testing.</li>
+      <li><strong>iOS App:</strong> Began developing a companion Swift iOS app for real-time E-bike testing and monitoring.</li>
+      <li><strong>Patents:</strong> European Patent TWM627643U and Taiwan Patent M627643, both issued June 2022.</li>
+      <li><strong>Research Phase:</strong> Started as an AI intern, conducting user data analysis, ML model selection, training and validation before taking the full software engineer role.</li>
+    </ul>`,
+    tech: ['PyTorch', 'Python', 'MQTT', 'Swift', 'iOS', 'Sensor Fusion', 'Real-time Systems', 'Patented IP']
+  },
+  aoi: {
+    icon: '🔬', tag: 'Computer Vision · SINBON Electronics',
+    title: 'Automatic Optical Inspection (AOI)',
+    body: `<p>Led the AOI project at SINBON Electronics as project lead — an automated quality control system for industrial manufacturing using deep learning computer vision.</p>
+    <ul>
+      <li><strong>Scope:</strong> End-to-end vision pipeline covering image classification, object detection, and text detection.</li>
+      <li><strong>Image Processing:</strong> Used OpenCV for preprocessing, normalization, and augmentation of industrial imagery.</li>
+      <li><strong>Deep Learning:</strong> PyTorch models for multi-task detection — classification, bounding box regression, and text recognition.</li>
+      <li><strong>OCR Component:</strong> Led development of an OCR solution to extract text data from product images for a commercial application.</li>
+      <li><strong>Performance:</strong> Implemented multi-processing for throughput optimization to meet industrial production line speed requirements.</li>
+      <li><strong>Leadership:</strong> Managed the project from R&D inception to deployment as project leader.</li>
+    </ul>`,
+    tech: ['OpenCV', 'PyTorch', 'Python', 'OCR', 'Object Detection', 'Multiprocessing', 'Industrial Vision']
+  },
+  angle: {
+    icon: '📐', tag: 'Computer Vision · PhD Research · Journal 2024',
+    title: 'Industrial Angle Detection System',
+    body: `<p>Developed an automated angle detection system for industrial production lines, published in Intelligent Automation & Soft Computing in August 2024.</p>
+    <ul>
+      <li><strong>Problem:</strong> Manual angle measurement on production lines is slow, inconsistent, and a bottleneck in QC workflows.</li>
+      <li><strong>Approach:</strong> Combined multiple image processing techniques (edge detection, Hough transforms, geometric analysis) for robust angle estimation.</li>
+      <li><strong>Robustness:</strong> System designed to handle varying lighting, occlusion, and object orientations typical of factory floors.</li>
+      <li><strong>Accuracy:</strong> Achieved sub-degree precision suitable for industrial tolerance requirements.</li>
+      <li><strong>Publication:</strong> Peer-reviewed in Intelligent Automation & Soft Computing, a Springer/Taylor & Francis journal.</li>
+    </ul>`,
+    tech: ['OpenCV', 'Python', 'Image Processing', 'Edge Detection', 'Geometric Analysis', 'Journal Published']
+  },
+  sms: {
+    icon: '📱', tag: 'Backend Engineering · Appier · Singapore',
+    title: 'PDPA-Compliant SMS Webhook API',
+    body: `<p>Built custom webhook APIs to handle SMS unsubscribe workflows for all Singapore clients, ensuring full compliance with Singapore's Personal Data Protection Act (PDPA).</p>
+    <ul>
+      <li><strong>Scope:</strong> All Singapore-based clients across Appier's AIQUA and AIRIS platforms.</li>
+      <li><strong>Architecture:</strong> RESTful webhook APIs in Python, integrated with multiple SMS provider backends.</li>
+      <li><strong>Compliance:</strong> Designed to meet PDPA requirements for consent withdrawal and data management.</li>
+      <li><strong>Provider Integration:</strong> Coordinated with multiple regional SMS providers for seamless unsubscribe propagation.</li>
+      <li><strong>Reliability:</strong> Built with error handling and retry logic to ensure no missed unsubscribe events.</li>
+      <li><strong>Monitoring:</strong> Integrated with Kibana for logging and audit trail requirements.</li>
+    </ul>`,
+    tech: ['Python', 'REST APIs', 'Webhooks', 'PDPA', 'SMS Providers', 'Kibana', 'Compliance Engineering']
+  },
+  cnn: {
+    icon: '🧠', tag: 'Machine Learning · ICSMech 2024',
+    title: 'CNN Backbone Comparative Study',
+    body: `<p>Published comparative analysis of pre-trained CNN backbones and traditional ML techniques for the challenging task of classifying high-similarity circular objects in industrial settings.</p>
+    <ul>
+      <li><strong>Problem:</strong> Circular industrial objects (lenses, washers, bearings) look nearly identical — standard classification approaches fail on high intra-class similarity datasets.</li>
+      <li><strong>Approach:</strong> Benchmarked ResNet, EfficientNet, VGG, MobileNet, and Vision Transformers against SVM and traditional ML baselines.</li>
+      <li><strong>Methodology:</strong> Rigorous cross-validation, ablation studies, and fine-tuning experiments.</li>
+      <li><strong>Findings:</strong> Identified which architectures handle fine-grained circular object distinctions best, with practical guidance for industrial deployment.</li>
+      <li><strong>Publication:</strong> Presented at ICSMech 2024 — International Conference on Smart Mechanisms.</li>
+    </ul>`,
+    tech: ['PyTorch', 'TensorFlow', 'ResNet', 'EfficientNet', 'ViT', 'SVM', 'Python', 'Fine-tuning', 'Benchmarking']
+  }
+};
+
+document.querySelectorAll('.project-card').forEach(card => {
+  card.addEventListener('click', () => {
+    const key = card.dataset.modal;
+    const data = modals[key];
+    if (!data) return;
+    document.getElementById('modal-content').innerHTML = `
+      <div class="modal-icon">${data.icon}</div>
+      <div class="modal-tag">${data.tag}</div>
+      <div class="modal-title">${data.title}</div>
+      <div class="modal-body">${data.body}</div>
+      <div class="modal-tech">${data.tech.map(t => `<span>${t}</span>`).join('')}</div>
+    `;
+    document.getElementById('modal-overlay').classList.add('open');
+  });
+});
+
+document.getElementById('modal-close').addEventListener('click', () => {
+  document.getElementById('modal-overlay').classList.remove('open');
+});
+document.getElementById('modal-overlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('modal-overlay')) {
+    document.getElementById('modal-overlay').classList.remove('open');
+  }
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') document.getElementById('modal-overlay').classList.remove('open');
+});
+</script>
+</body>
+</html>
